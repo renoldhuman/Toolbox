@@ -9,6 +9,7 @@ public func validateEmail(enteredEmail:String) -> Bool {
 
 }
 
+@available(iOS 13.0, *)
 @available(macOS 10.15, *)
 public func convertHexToColor(_ hex: UInt64) -> Color {
     let red = Double((hex >> 24) & 0xFF) / 255.0
@@ -19,6 +20,7 @@ public func convertHexToColor(_ hex: UInt64) -> Color {
     return Color(red: red, green: green, blue: blue, opacity: alpha)
 }
 
+@available(iOS 13.0, *)
 @available(macOS 11, *)
 public func convertColorToHex(_ color: Color) -> UInt64? {
     var hexColor: UInt64?
