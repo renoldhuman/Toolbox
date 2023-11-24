@@ -1,5 +1,6 @@
 import Foundation
 import SwiftUI
+import UIKit
 
 public func validateEmail(enteredEmail:String) -> Bool {
 
@@ -24,7 +25,7 @@ public func convertHexToColor(_ hex: UInt64) -> Color {
 @available(macOS 11, *)
 public func convertColorToHex(_ color: Color) -> UInt64? {
     var hexColor: UInt64?
-    if let components = color.cgColor?.components {
+    if let components = UIColor(color).cgColor.components {
         let red = lroundf(Float(components[0]) * 255) << 24
         let green = lroundf(Float(components[1] * 255)) << 16
         let blue = lroundf(Float(components[2] * 255)) << 8
