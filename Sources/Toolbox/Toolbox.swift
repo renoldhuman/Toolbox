@@ -48,12 +48,12 @@ public struct CharacterLimit: ViewModifier {
     @Binding var text: String
     var characterLimit: Int
     
-    init(_ text: Binding<String>, characterLimit: Int) {
+    public init(_ text: Binding<String>, characterLimit: Int) {
         self._text = text
         self.characterLimit = characterLimit
     }
     
-    func body(content: Content) -> some View {
+    public func body(content: Content) -> some View {
         if #available(iOS 17.0, *) {
             content
                 .onChange(of: text, {
