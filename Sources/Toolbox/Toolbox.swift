@@ -41,3 +41,39 @@ public func convertColorToHex(_ color: Color) -> UInt64? {
     
     return hexColor
 }
+
+struct CharacterLimit: ViewModifier {
+    @Binding var text: String
+    var characterLimit: Int
+    
+    init(_ text: Binding<String>, characterLimit: Int) {
+        self._text = text
+        self.characterLimit = characterLimit
+    }
+    
+    func body(content: Content) -> some View {
+        if #available(iOS 17.0, *) {
+            content
+                .onChange(of: text, {
+                    if text.count > characterLimit {
+                        text.removeLast()
+                    }
+                })
+        }
+        else {
+            content
+                .onChange(of: text, perform: { value in
+                    if value.count > characterLimit {
+                        text.removeLast()
+                    }
+                })
+        }
+    }
+        
+}
+
+extension View {
+    func characterLimit(_ limit: Int, text: Binding<String>) -> some View {
+        return self.modifier(CharacterLimit(text, characterLimit: limit))
+    }
+}

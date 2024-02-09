@@ -12,7 +12,7 @@ final class ToolboxTests: XCTestCase {
     }
     
     func testHexToColor() {
-        let color = convertHexToColor(255)
+        let color = convertHexToColor(4282069247)
         print(color.description)
         XCTAssert(true)
     }
