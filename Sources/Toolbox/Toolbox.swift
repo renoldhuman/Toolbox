@@ -44,7 +44,7 @@ public func convertColorToHex(_ color: Color) -> UInt64? {
 
 @available(iOS 14.0, *)
 @available(macOS 11, *)
-struct CharacterLimit: ViewModifier {
+public struct CharacterLimit: ViewModifier {
     @Binding var text: String
     var characterLimit: Int
     
@@ -77,7 +77,7 @@ struct CharacterLimit: ViewModifier {
 @available(iOS 14.0, *)
 @available(macOS 11, *)
 extension View {
-    func characterLimit(_ limit: Int, text: Binding<String>) -> some View {
+    public func characterLimit(_ limit: Int, text: Binding<String>) -> some View {
         return self.modifier(CharacterLimit(text, characterLimit: limit))
     }
 }
