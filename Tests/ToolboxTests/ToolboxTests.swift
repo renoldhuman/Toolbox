@@ -49,6 +49,6 @@ final class ToolboxTests: XCTestCase {
             return
         }
         let color2 = Color(hex: "#835239")
-        XCTAssert(color == color2)
+        XCTAssert(darkenedColor == color2)
     }
 }

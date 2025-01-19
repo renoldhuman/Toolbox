@@ -119,7 +119,7 @@ extension Color {
     
     /// Darkens the color by some set amount
     /// amount: some amount in the range 0-255, clamped to 255 if >
-    func darken(_ amount: CGFloat) -> Color {
+    public func darken(_ amount: CGFloat) -> Color {
         let am = min(255, amount)
         let uiColor = UIColor(self)
         var red: CGFloat = 0
@@ -132,9 +132,9 @@ extension Color {
         green *= 255
         blue *= 255
         
-        red -= amount
-        green -= amount
-        blue -= amount
+        red -= am
+        green -= am
+        blue -= am
         
         red /= 255.0
         green /= 255.0
