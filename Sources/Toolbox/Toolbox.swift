@@ -12,18 +12,80 @@ public func validateEmail(enteredEmail:String) -> Bool {
 
 @available(iOS 13.0, *)
 @available(macOS 10.15, *)
-public func convertHexToColor(_ hex: UInt64) -> Color {
-    let red = Double((hex >> 24) & 0xFF) / 255.0
-    let green = Double((hex >> 16) & 0xFF) / 255.0
-    let blue = Double((hex >> 8) & 0xFF) / 255.0
-    let alpha = Double((hex) & 0xFF) / 255.0
+public func convertHexStringToRGBA(_ hex: String) -> (r: Double, g: Double, b: Double, a: Double)? {
+    var h = hex
+    if h.hasPrefix("#") {
+        h.removeFirst()
+    }
+    if h.hasPrefix("0x") {
+        h.removeFirst(2)
+    }
+    if let dec = UInt32(h, radix: 16) {
+        var red: Double = 0
+        var green: Double = 0
+        var blue: Double = 0
+        var alpha: Double = Double(0xFF) / 255.0
+        if h.count == 6 {
+            red = Double((dec >> 16) & 0xFF) / 255.0
+            green = Double((dec >> 8) & 0xFF) / 255.0
+            blue = Double(dec & 0xFF) / 255.0
+        }
+        else if h.count == 8 {
+            red = Double((dec >> 24) & 0xFF) / 255.0
+            green = Double((dec >> 16) & 0xFF) / 255.0
+            blue = Double((dec >> 8) & 0xFF) / 255.0
+            alpha = Double((dec) & 0xFF) / 255.0
+        }
+        else {
+            return nil
+        }
+        
+        return (red, green, blue, alpha)
+    }
+    return nil
+}
+
+@available(iOS 13.0, *)
+@available(macOS 10.15, *)
+public func convertHexStringToColor(_ hex: String) -> Color? {
+    var h = hex
+    if h.hasPrefix("#") {
+        h.removeFirst()
+    }
+    if h.hasPrefix("0x") {
+        h.removeFirst(2)
+    }
+    if let dec = UInt64(h, radix: 16) {
+        return convertUInt64HexToColor(dec)
+    }
+    return nil
+}
+
+@available(iOS 13.0, *)
+@available(macOS 10.15, *)
+public func convertUInt64HexToColor(_ hex: UInt64) -> Color {
+    var red = Double((hex >> 24) & 0xFF) / 255.0
+    var green = Double((hex >> 16) & 0xFF) / 255.0
+    var blue = Double((hex >> 8) & 0xFF) / 255.0
+    var alpha = Double(0xFF) / 255.0
+    if hex > 16777215 {
+        red = Double((hex >> 24) & 0xFF) / 255.0
+        green = Double((hex >> 16) & 0xFF) / 255.0
+        blue = Double((hex >> 8) & 0xFF) / 255.0
+        alpha = Double(hex & 0xFF) / 255.0
+    }
+    else {
+        red = Double((hex >> 16) & 0xFF) / 255.0
+        green = Double((hex >> 8) & 0xFF) / 255.0
+        blue = Double(hex & 0xFF) / 255.0
+    }
     
     return Color(red: red, green: green, blue: blue, opacity: alpha)
 }
 
 @available(iOS 14.0, *)
 @available(macOS 11, *)
-public func convertColorToHex(_ color: Color) -> UInt64? {
+public func convertColorToUInt64Hex(_ color: Color) -> UInt64? {
     var hexColor: UInt64?
     if let components = UIColor(color).cgColor.components {
         let red = lroundf(Float(components[0]) * 255) << 24
@@ -40,6 +102,20 @@ public func convertColorToHex(_ color: Color) -> UInt64? {
     }
     
     return hexColor
+}
+
+
+@available(iOS 13.0, *)
+@available(macOS 10.15, *)
+extension Color {
+    init?(hex: String) {
+        if let rgba = convertHexStringToRGBA(hex) {
+            self.init(red: rgba.r, green: rgba.g, blue: rgba.b, opacity: rgba.a)
+            return
+        }
+        
+        return nil
+    }
 }
 
 @available(iOS 14.0, *)
