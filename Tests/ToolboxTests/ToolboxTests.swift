@@ -41,4 +41,14 @@ final class ToolboxTests: XCTestCase {
         print(hex)
         XCTAssert(true)
     }
+    
+    func testDarkenColor() {
+        let color = Color(hex: "#FBCAB1")
+        guard let darkenedColor = color?.darken(120) else {
+            XCTAssert(false)
+            return
+        }
+        let color2 = Color(hex: "#835239")
+        XCTAssert(color == color2)
+    }
 }

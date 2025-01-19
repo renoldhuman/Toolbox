@@ -105,7 +105,7 @@ public func convertColorToUInt64Hex(_ color: Color) -> UInt64? {
 }
 
 
-@available(iOS 13.0, *)
+@available(iOS 14.0, *)
 @available(macOS 10.15, *)
 extension Color {
     init?(hex: String) {
@@ -115,6 +115,32 @@ extension Color {
         }
         
         return nil
+    }
+    
+    /// Darkens the color by some set amount
+    /// amount: some amount in the range 0-255, clamped to 255 if >
+    func darken(_ amount: CGFloat) -> Color {
+        let am = min(255, amount)
+        let uiColor = UIColor(self)
+        var red: CGFloat = 0
+        var green: CGFloat = 0
+        var blue: CGFloat = 0
+        var alpha: CGFloat = 0
+        uiColor.getRed(&red, green: &green, blue: &blue, alpha: &alpha)
+        
+        red *= 255
+        green *= 255
+        blue *= 255
+        
+        red -= amount
+        green -= amount
+        blue -= amount
+        
+        red /= 255.0
+        green /= 255.0
+        blue /= 255.0
+        
+        return Color(red: Double(red), green: Double(green), blue: Double(blue), opacity: Double(alpha))
     }
 }
 
